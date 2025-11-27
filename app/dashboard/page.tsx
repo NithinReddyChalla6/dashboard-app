@@ -4,11 +4,12 @@ import CardWrapper from '@/app/ui/dashboard/cards';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 import InvoiceStatusChart from '@/app/ui/dashboard/invoice-status-chart';
 import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
-import { fetchRevenue, fetchCardData } from '@/app/lib/data';
+import { fetchRevenue, fetchCardData, fetchLatestInvoices } from '@/app/lib/data';
 
 export default async function Page() {
   const revenue = await fetchRevenue();
   const cardData = await fetchCardData();
+  const latestInvoices = await fetchLatestInvoices();
 
   return (
     <main className="p-6 md:p-10">
@@ -31,7 +32,7 @@ export default async function Page() {
       </div>
       <div className="mt-6">
         <Suspense fallback={<LatestInvoicesSkeleton />}>
-          <LatestInvoices />
+          <LatestInvoices latestInvoices={latestInvoices} />
         </Suspense>
       </div>
     </main>
