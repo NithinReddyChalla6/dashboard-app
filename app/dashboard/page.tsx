@@ -24,8 +24,8 @@ export default async function Page() {
         </Suspense>
         <Suspense fallback={<RevenueChartSkeleton />}>
           <InvoiceStatusChart 
-            totalPaid={cardData.totalPaidInvoices} 
-            totalPending={cardData.totalPendingInvoices}
+            totalPaid={Number(cardData.totalPaidInvoices)} 
+            totalPending={Number(cardData.totalPendingInvoices)}
           />
         </Suspense>
       </div>
