@@ -1,5 +1,4 @@
 import { lusitana } from '@/app/ui/fonts';
-import { PieChartIcon } from '@heroicons/react/24/outline';
 
 export default async function InvoiceStatusChart({
   totalPending,
