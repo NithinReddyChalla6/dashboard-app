@@ -14,10 +14,9 @@ export default async function Page(props: {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || '';
 
-  async function CustomersContent() {
-    const customers = await fetchFilteredCustomers(query);
-    return <CustomersTable customers={customers} />;
-  }
+  // Fetch customers on the server before rendering to avoid creating
+  // components during render (prevents "Cannot create components during render").
+  const customers = await fetchFilteredCustomers(query);
 
   return (
     <div className="w-full">
@@ -27,9 +26,7 @@ export default async function Page(props: {
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Search customers..." />
       </div>
-      <Suspense key={query} fallback={<CustomersTableSkeleton />}>
-        <CustomersContent />
-      </Suspense>
+      <CustomersTable customers={customers} />
     </div>
   );
 }
