@@ -25,8 +25,9 @@ export async function fetchRevenue() {
 
     return data;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
+    console.error('Database Error (fetchRevenue):', error);
+    // Return safe fallback so server rendering doesn't crash
+    return [] as Revenue[];
   }
 }
 
@@ -45,8 +46,9 @@ export async function fetchLatestInvoices() {
     }));
     return latestInvoices;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest invoices.');
+    console.error('Database Error (fetchLatestInvoices):', error);
+    // Fallback to empty array on DB error
+    return [] as any[];
   }
 }
 
@@ -80,8 +82,14 @@ export async function fetchCardData() {
       totalPendingInvoices,
     };
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch card data.');
+    console.error('Database Error (fetchCardData):', error);
+    // Return safe defaults so UI can render
+    return {
+      numberOfCustomers: 0,
+      numberOfInvoices: 0,
+      totalPaidInvoices: '0',
+      totalPendingInvoices: '0',
+    };
   }
 }
 
@@ -116,8 +124,8 @@ export async function fetchFilteredInvoices(
 
     return invoices;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoices.');
+    console.error('Database Error (fetchFilteredInvoices):', error);
+    return [] as InvoicesTable[];
   }
 }
 
@@ -137,8 +145,8 @@ export async function fetchInvoicesPages(query: string) {
     const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    console.error('Database Error (fetchInvoicesPages):', error);
+    return 0;
   }
 }
 
@@ -162,8 +170,8 @@ export async function fetchInvoiceById(id: string) {
 
     return invoice[0];
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoice.');
+    console.error('Database Error (fetchInvoiceById):', error);
+    return null as unknown as InvoiceForm;
   }
 }
 
@@ -179,8 +187,8 @@ export async function fetchCustomers() {
 
     return customers;
   } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
+    console.error('Database Error (fetchCustomers):', err);
+    return [] as CustomerField[];
   }
 }
 
@@ -212,7 +220,7 @@ export async function fetchFilteredCustomers(query: string) {
 
     return customers;
   } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch customer table.');
+    console.error('Database Error (fetchFilteredCustomers):', err);
+    return [] as CustomersTableType[];
   }
 }
